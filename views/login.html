@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng Nhập</title>
+    <link rel="stylesheet" href="../style/login.css">
+  </head>
+  <body>
+    <div class="login-form">
+      <h2>Đăng Nhập</h2>
+      <form action="/login" method="POST">
+        <input
+          type="text"
+          name="username"
+          placeholder="Tên đăng nhập"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Mật khẩu"
+          required
+        />
+        <button type="submit">Đăng Nhập</button>
+      </form>
+        <div id="error-message" style="color: red; display: none; margin-bottom: 15px">
+                <!-- Nội dung lỗi sẽ được cập nhật bởi JavaScript -->
+        </div>
+   <script>
+  // Hàm kiểm tra tham số truy vấn trong URL và hiển thị thông báo lỗi tương ứng
+  function checkLoginError() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error')) {
+      const errorType = urlParams.get('error');
+      const errorMessage = document.getElementById('error-message');
+
+      switch(errorType) {
+        case 'invalid_credentials':
+          errorMessage.textContent = "Tài khoản hoặc mật khẩu không đúng!";
+          break;
+        case 'missing_fields':
+          errorMessage.textContent = "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.";
+          break;
+        default:
+          errorMessage.textContent = "Đã xảy ra lỗi. Vui lòng thử lại.";
+      }
+      errorMessage.style.display = 'block';
+    }
+  }
+
+  // Gọi hàm khi trang được tải
+  window.onload = checkLoginError;
+</script>
+
+  </body>
+</html>

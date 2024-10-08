@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chỉnh Sửa Tài Liệu</title>
+    <link rel="stylesheet" href="../style/edit.css" />
+  </head>
+  <body>
+    <div class="header">
+      <h1>Chỉnh Sửa Tài Liệu</h1>
+    </div>
+    <nav class="nav">
+      <a href="/admin">Danh Sách Tài Liệu</a>
+      <form
+        action="/logout"
+        method="GET"
+        style="display: inline; margin-left: auto"
+      >
+        <button type="submit" class="logout-btn">Đăng xuất</button>
+      </form>
+    </nav>
+    <div class="container">
+      <div class="upload-form">
+        <form id="edit-form" enctype="multipart/form-data">
+          <input type="hidden" id="document-id" name="id" />
+          <div class="form-group">
+            <label for="name">Tên tài liệu:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Nhập tên tài liệu"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="description">Mô tả tài liệu:</label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Nhập mô tả tài liệu"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="category">Thể loại tài liệu:</label>
+            <select id="category" name="category" required>
+              <option value="">Chọn thể loại</option>
+              <option value="Chủ nghĩa xã hội khoa học">
+                Chủ nghĩa xã hội khoa học
+              </option>
+              <option value="Phương pháp nghiên cứu khoa học">
+                Phương pháp nghiên cứu khoa học
+              </option>
+              <option value="Lịch sử Đảng Cộng sản Việt Nam">
+                Lịch sử Đảng Cộng sản Việt Nam
+              </option>
+
+              <option value="Tư tưởng Hồ Chí Minh">Tư tưởng Hồ Chí Minh</option>
+              <option value="Tin học quản lý">Tin học quản lý</option>
+              <option value="Khoa học">Pháp luật đại cương</option>
+              <option value="Toán đại cương">Toán đại cương</option>
+
+              <option value="Quản trị cơ sở dữ liệu">
+                Quản trị cơ sở dữ liệu
+              </option>
+              <option value="Lập trình hướng đối tượng">
+                Lập trình hướng đối tượng
+              </option>
+              <option value="An toàn bảo mật thông tin">
+                An toàn bảo mật thông tin
+              </option>
+              <option value="Phân tích và thiết kế hệ thống">
+                Phân tích và thiết kế hệ thống
+              </option>
+              <option value="Thiết kế và triển khai website">
+                Thiết kế và triển khai website
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="file"
+              >Chọn file tài liệu (bỏ qua nếu không thay đổi):</label
+            >
+            <input type="file" id="file" name="file" />
+          </div>
+          <div
+            class="form-group current-file"
+            id="current-file-container"
+            style="display: none"
+          >
+            <label>File hiện tại:</label>
+            <a href="#" target="_blank" id="current-file-link"
+              >Tải xuống file hiện tại</a
+            >
+          </div>
+          <button type="submit">Lưu Thay Đổi</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Lấy ID tài liệu từ URL
+      const pathSegments = window.location.pathname.split("/");
+      const docId = pathSegments[pathSegments.length - 1];
+
+      // Hàm lấy thông tin tài liệu hiện tại và pre-fill form
+      async function fetchDocument() {
+        try {
+          const response = await fetch(`/api/documents/${docId}`);
+          if (!response.ok) {
+            throw new Error("Không thể lấy thông tin tài liệu.");
+          }
+          const doc = await response.json();
+          document.getElementById("document-id").value = doc.id;
+          document.getElementById("name").value = doc.name;
+          document.getElementById("description").value = doc.description;
+          document.getElementById("category").value = doc.category;
+
+          // Hiển thị thông tin file hiện tại nếu có
+          if (doc.path) {
+            const filename = doc.path.split("/").pop();
+            const fileLink = `/uploads/${filename}`;
+            document.getElementById("current-file-link").href = fileLink;
+            document.getElementById("current-file-link").textContent = filename;
+            document.getElementById("current-file-container").style.display =
+              "block";
+          }
+        } catch (error) {
+          alert(error.message);
+        }
+      }
+
+      // Xử lý gửi form
+      document
+        .getElementById("edit-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const form = e.target;
+          const formData = new FormData(form);
+
+          const id = formData.get("id");
+
+          try {
+            const response = await fetch(`/api/documents/${id}`, {
+              method: "PUT",
+              body: formData, // Gửi FormData bao gồm file nếu có
+            });
+
+            if (response.ok) {
+              alert("Cập nhật thành công!");
+              window.location.href = "/admin";
+            } else {
+              const errorText = await response.text();
+              throw new Error(errorText || "Lỗi khi cập nhật tài liệu.");
+            }
+          } catch (error) {
+            alert(error.message);
+          }
+        });
+
+      // Gọi hàm để lấy thông tin tài liệu khi trang được tải
+      window.onload = fetchDocument;
+    </script>
+  </body>
+</html>

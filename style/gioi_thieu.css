@@ -1,0 +1,66 @@
+.gioi-thieu-1 {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    max-width: 1224px;
+}
+
+.gioi-thieu-1>h2 {
+    padding-bottom: 1.25rem;
+    letter-spacing: .025em;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+}
+
+.gioi-thieu-1>div {
+    gap: 4rem;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    text-align: justify;
+    max-width: 64rem;
+    display: grid;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gioi-thieu-2>h2 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    color: rgb(255 255 255/1);
+    letter-spacing: .025em;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.gioi-thieu-2>div {
+    display: grid;
+    grid-template-columns: repeat(6,minmax(0,1fr));
+    gap: 1rem;
+}
+.gioi-thieu-2>div>div {
+    padding: 2rem;
+    background-color: rgb(255 255 255/1);
+    border-radius: 0.75rem;
+    grid-column: span 2/span 2;
+    text-align: center;
+}
+
+.gioi-thieu-2 img {
+    margin-bottom: 1rem;
+    width: 4rem;
+    height: 4rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+

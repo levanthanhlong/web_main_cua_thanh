@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Danh Sách Tài Liệu</title>
+    <link rel="stylesheet" href="../style/admin.css" />
+  </head>
+  <body>
+    <div class="header">
+      <h1>Quản Lý Tài Liệu</h1>
+    </div>
+    <nav class="nav">
+      <a href="/upload">Upload Tài Liệu</a>
+      <a href="/admin">Danh Sách Tài Liệu</a>
+      <form
+        action="/logout"
+        method="GET"
+        style="display: inline; margin-left: auto"
+      >
+        <button type="submit" class="logout-btn">Đăng xuất</button>
+      </form>
+    </nav>
+    <div class="container">
+      <h2>Danh Sách Tài Liệu</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tên Tài Liệu</th>
+            <th>Thể Loại</th>
+            <th>Đường Dẫn</th>
+            <th>Chỉnh sửa</th>
+            <th>Xóa</th>
+          </tr>
+        </thead>
+        <tbody id="document-list">
+          <!-- Dữ liệu tài liệu sẽ được thêm vào đây bằng JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      // Hàm lấy danh sách tài liệu từ máy chủ
+      async function fetchDocuments() {
+        const response = await fetch("/api/documents");
+        const documents = await response.json();
+        const documentList = document.getElementById("document-list");
+
+        documents.forEach((doc) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${doc.id}</td>
+            <td>${doc.name}</td>
+            <td>${doc.category}</td>
+            <td><a href="${doc.path}" target="_blank">${doc.path}</a></td>
+            <td><a href="/edit/${doc.id}" class="edit-link">Sửa</a></td>
+            <td><button class="delete-btn" data-id="${doc.id}">Xóa</button></td>
+          `;
+          documentList.appendChild(row);
+        });
+
+        // Thêm sự kiện cho các nút Xóa sau khi các hàng đã được thêm
+        document.querySelectorAll(".delete-btn").forEach((button) => {
+          button.addEventListener("click", async (e) => {
+            const docId = e.target.getAttribute("data-id");
+            if (confirm("Bạn có chắc chắn muốn xóa tài liệu này?")) {
+              const response = await fetch(`/api/documents/${docId}`, {
+                method: "DELETE",
+              });
+              if (response.ok) {
+                // Xóa hàng khỏi bảng mà không cần tải lại trang
+                e.target.closest("tr").remove();
+              } else {
+                alert("Lỗi khi xóa tài liệu.");
+              }
+            }
+          });
+        });
+      }
+
+      // Gọi hàm để tải danh sách tài liệu khi trang được tải
+      window.onload = fetchDocuments;
+    </script>
+  </body>
+</html>

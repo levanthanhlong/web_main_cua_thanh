@@ -1,0 +1,52 @@
+/* Tổng quát */
+.document-container {
+  background-color: #eeeaea;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+  max-width: 60%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin-bottom: 50px;
+}
+
+/* Category */
+.category {
+  font-weight: bold;
+  color: blue; /* Màu xanh dương */
+  margin-bottom: 10px;
+}
+
+/* Document Name */
+.document-name p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333; /* Màu xám đậm */
+  margin-bottom: 10px;
+}
+
+/* Document Description */
+.document-description p {
+  font-size: 1rem;
+  color: #666; /* Màu xám nhạt */
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* Download Button */
+.document-download .download-btn {
+  display: inline-block;
+  background-color: #4a90e2; /* Màu xanh dương */
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.document-download .download-btn:hover {
+  background-color: #357ab8; /* Đổi màu khi hover */
+}
